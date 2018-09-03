@@ -9,6 +9,7 @@ repoName += process.argv[3];
 
 
 function getRepoContributors(repoOwner, repoName, cb) {
+
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
@@ -19,6 +20,9 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
   request(options, function(err, res, body) {
     var obj = JSON.parse(body);
+    if(obj.message){
+      console.log(obj.message, "Please type repo owner and repo name");
+    }
     obj.forEach(function(user){
       cb(err, user.avatar_url, `./avatar/${user.id}.jpg`);
     })
